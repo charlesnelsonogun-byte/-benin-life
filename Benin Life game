@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benin Life 🇳🇬</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080d18;
+      color: #f4f7fb;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 900px;
+      margin: auto;
+      min-height: 100vh;
+      background: #0d1422;
+    }
+
+    .hero {
+      padding: 28px 20px;
+      background: linear-gradient(135deg, #111c31, #33210b);
+      border-bottom: 1px solid #26344b;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 900;
+    }
+
+    .hero p {
+      color: #9eabc0;
+      margin-top: 7px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .card {
+      background: #151f31;
+      border: 1px solid #28374f;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card h2,
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      color: #9eabc0;
+      font-size: 13px;
+      margin: 14px 0 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 46px;
+      padding: 12px;
+      border-radius: 11px;
+      border: 1px solid #2b3a53;
+      background: #0a1220;
+      color: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #f5a623;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 9px;
+      border: none;
+      border-radius: 11px;
+      padding: 11px 15px;
+      background: #263650;
+      color: white;
+      font-weight: 800;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .primary {
+      background: #f5a623;
+      color: #101010;
+    }
+
+    .danger {
+      background: #8b2020;
+    }
+
+    .money {
+      font-size: 30px;
+      font-weight: 900;
+      color: #f5c45a;
+    }
+
+    .muted {
+      color: #9eabc0;
+      font-size: 13px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .player-name {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .location {
+      color: #9eabc0;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      padding: 10px;
+      background: #0a111e;
+      border-bottom: 1px solid #26344b;
+    }
+
+    .nav button {
+      min-height: 45px;
+      border-radius: 10px;
+      border: 1px solid #293951;
+      background: #121c2d;
+      color: #aab5c7;
+      font-weight: 700;
+    }
+
+    .nav button.active {
+      background: #f5a623;
+      color: #111;
+    }
+
+    .stat {
+      margin: 10px 0;
+    }
+
+    .stat-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 8px;
+      background: #29364c;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: #f5a623;
+    }
+
+    .event {
+      background: #171e2c;
+      border-left: 4px solid #f5a623;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .log {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .log div {
+      padding: 8px 0;
+      border-bottom: 1px solid #253149;
+      color: #9eabc0;
+      font-size: 13px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translateX(-50%);
+      background: #111827;
+      border: 1px solid #34435b;
+      border-radius: 12px;
+      padding: 12px 18px;
+      display: none;
+      z-index: 999;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .tag {
+      display: inline-block;
+      border: 1px solid #35445c;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      color: #aab5c7;
+    }
+
+    .danger-text {
+      color: #ff7777;
+    }
+
+    .success-text {
+      color: #75df9a;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .content {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- START SCREEN -->
+  <section id="startScreen">
+
+    <div class="hero">
+      <h1>🇳🇬 BENIN LIFE</h1>
+      <p>Your life. Your choices. Your Benin.</p>
+    </div>
+
+    <div class="content">
+
+      <div class="card">
+
+        <h2>👤 Create Your Character</h2>
+
+        <label>Your Name</label>
+        <input
+          id="playerName"
+          type="text"
+          maxlength="24"
+          placeholder="Enter your name"
+        />
+
+        <label>Age</label>
+
+        <select id="playerAge">
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+          <option value="21">21</option>
+          <option value="22">22</option>
+          <option value="25">25</option>
+          <option value="30">30</option>
+        </select>
+
+        <label>Choose Your Starting Life</label>
+
+        <select id="startingPath">
+          <option value="student">🎓 Student</option>
+          <option value="worker">💼 Worker</option>
+          <option value="hustler">🔥 Hustler</option>
+        </select>
+
+        <button class="btn primary" onclick="startGame()">
+          START MY LIFE 🚀
+        </button>
+
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>🏙️ Benin City</h3>
+          <p class="muted">
+            Explore Ugbowo, Ring Road, New Benin, GRA,
+            Ekewan and Airport Road.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>🎲 Your Story</h3>
+          <p class="muted">
+            Work, study, eat, date, build businesses,
+            buy cars and make your own choices.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- GAME -->
+  <section id="gameScreen" class="hidden">
+
+    <div class="hero">
+
+      <div class="topbar">
+
+        <div>
+          <div class="player-name" id="headerName"></div>
+          <div class="location" id="headerLocation"></div>
+        </div>
+
+        <span class="tag" id="headerDay"></span>
+
+      </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="nav">
+
+      <button onclick="showTab('home')" id="navHome">
+        🏠 Home
+      </button>
+
+      <button onclick="showTab('city')" id="navCity">
+        📍 City
+      </button>
+
+      <button onclick="showTab('life')" id="navLife">
+        ❤️ Life
+      </button>
+
+      <button onclick="showTab('money')" id="navMoney">
+        💰 Money
+      </button>
+
+    </div>
+
+
+    <div class="content">
+
+      <!-- HOME -->
+
+      <div id="homeTab">
+
+        <div class="card">
+
+          <div class="muted">
+            CASH
+          </div>
+
+          <div class="money" id="cashDisplay"></div>
+
+          <div class="muted">
+            Bank: <span id="bankDisplay"></span>
+          </div>
+
+        </div>
+
+
+        <div class="grid">
+
+          <div class="card">
+
+            <h3>📊 Your Stats</h3>
+
+            <div id="mainStats"></div>
+
+          </div>
+
+
+          <div class="card">
+
+            <h3>👤 Life Stats</h3>
+
+            <div id="lifeStats"></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>🏠 Home</h3>
+
+          <div id="homeInfo"></div>
+
+          <button class="btn" onclick="gameAction('sleep')">
+            😴 Sleep & Start Next Day
+          </button>
+
+          <button class="btn" onclick="gameAction('eat')">
+            🍛 Buy Food · ₦1,500
+          </button>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>📜 Recent Events</h3>
+
+          <div id="eventLog" class="log"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CITY -->
+
+      <div id="cityTab" class="hidden">
+
+        <div class="card">
+
+          <h2>📍 Explore Benin City</h2>
+
+          <p class="muted">
+            Where will you go today?
+          </p>
+
+        </div>
+
+
+        <div class="grid" id="cityLocations"></div>
+
+      </div>
+
+
+      <!-- LIFE -->
+
+      <div id="lifeTab" class="hidden">
+
+        <div class="grid">
+
+          <div class="card">
+
+            <h3>❤️ Relationships</h3>
+
+            <p class="muted">
+              Meet fictional characters and build relationships.
+            </p>
+
+            <button class="btn" onclick="gameAction('meet')">
+              💕 Meet Someone · ₦1,000
+            </button>
+
+            <div id="partnerInfo"></div>
+
+          </div>
+
+
+          <div class="card">
+
+            <h3>👥 Friends</h3>
+
+            <p class="muted">
+              Hang out and increase your reputation.
+            </p>
+
+            <button class="btn" onclick="gameAction('friends')">
+              🤝 Hang Out · ₦800
+            </button>
+
+          </div>
+
+
+          <div class="card">
+
+            <h3>🎓 Education</h3>
+
+            <p>
+              Education:
+              <b id="educationValue"></b>%
+            </p>
+
+            <div class="bar">
+              <span id="educationBar"></span>
+            </div>
+
+            <button class="btn" onclick="gameAction('study')">
+              📚 Study
+            </button>
+
+          </div>
+
+
+          <div class="card">
+
+            <h3>📱 Social Media</h3>
+
+            <div class="money" id="followers"></div>
+
+            <p class="muted">
+              followers
+            </p>
+
+            <button class="btn" onclick="gameAction('post')">
+              📸 Make a Post
+            </button>
+
+            <button class="btn" onclick="gameAction('trend')">
+              🔥 Create Trend · ₦2,000
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>🚗 Cars</h3>
+
+          <div class="grid" id="cars"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MONEY -->
+
+      <div id="moneyTab" class="hidden">
+
+        <div class="card">
+
+          <h2>💼 Career</h2>
+
+          <p>
+            Current job:
+            <b id="currentJob"></b>
+          </p>
+
+          <button class="btn primary" onclick="gameAction('work')">
+            💼 Work Shift · +₦8,000
+          </button>
+
+          <button class="btn" onclick="gameAction('business')">
+            🏪 Start Business · ₦100,000
+          </button>
+
+        </div>
+
+
+        <!-- UNDERGROUND CAREER -->
+
+        <div class="card">
+
+          <h2>🕶️ Underground Career</h2>
+
+          <p class="muted">
+            A fictional high-risk career path inside the game.
+            Higher levels produce higher in-game payouts,
+            but also increase your risk meter.
+          </p>
+
+          <br>
+
+          <div class="grid">
+
+            <div>
+              <p>Level</p>
+              <div class="money" id="underLevel">
+                0
+              </div>
+            </div>
+
+            <div>
+              <p>Daily Payout</p>
+              <div class="money" id="underPayout">
+                $0
+              </div>
+            </div>
+
+            <div>
+              <p>Risk</p>
+              <div class="danger-text">
+                <b id="risk"></b>%
+              </div>
+            </div>
+
+            <div>
+              <p>Freedom</p>
+              <div class="success-text">
+                <b id="freedom"></b>%
+              </div>
+            </div>
+
+          </div>
+
+
+          <button class="btn" onclick="gameAction('join')">
+            🕶️ Enter Underground
+          </button>
+
+          <button class="btn" onclick="gameAction('level')">
+            ⬆️ Attempt Level Up
+          </button>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>🏪 Your Business</h3>
+
+          <p id="businessInfo" class="muted">
+            You don't own a business yet.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+let player = null;
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function naira(amount) {
+
+  return "₦" + Math.round(amount).toLocaleString();
+
+}
+
+
+function dollars(amount) {
+
+  return "$" + Math.round(amount).toLocaleString();
+
+}
+
+
+function clamp(value, min, max) {
+
+  return Math.max(min, Math.min(max, value));
+
+}
+
+
+function notify(message) {
+
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+
+  toast.style.display = "block";
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+
+    toast.style.display = "none";
+
+  }, 2000);
+
+}
+
+
+function addLog(message) {
+
+  player.log.unshift(
+    "Day " + player.day + ": " + message
+  );
+
+  player.log = player.log.slice(0, 40);
+
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame() {
+
+  const name =
+    document.getElementById("playerName").value.trim()
+    || "Player";
+
+  const age =
+    Number(document.getElementById("playerAge").value);
+
+  const path =
+    document.getElementById("startingPath").value;
+
+
+  player = {
+
+    name: name,
+
+    age: age,
+
+    path: path,
+
+    day: 1,
+
+    cash: 15000,
+
+    bank: 0,
+
+    energy: 85,
+
+    hunger: 25,
+
+    happiness: 70,
+
+    health: 90,
+
+    education: 0,
+
+    reputation: 0,
+
+    followers: 0,
+
+    location: "Ugbowo",
+
+    home: "Small Room",
+
+    rent: 2500,
+
+    job: "None",
+
+    car: "None",
+
+    partner: null,
+
+    business: null,
+
+    underground: false,
+
+    undergroundLevel: 0,
+
+    risk: 0,
+
+    freedom: 100,
+
+    log: [
+
+      "Welcome to Benin City 🇳🇬"
+
+    ]
+
+  };
+
+
+  if (path === "student") {
+
+    player.job = "Student";
+
+    player.cash = 15000;
+
+  }
+
+
+  if (path === "worker") {
+
+    player.job = "Shop Assistant";
+
+    player.cash = 25000;
+
+  }
+
+
+  if (path === "hustler") {
+
+    player.job = "Street Hustler";
+
+    player.cash = 18000;
+
+  }
+
+
+  document
+    .getElementById("startScreen")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("gameScreen")
+    .classList.remove("hidden");
+
+
+  showTab("home");
+
+  render();
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showTab(tab) {
+
+  const tabs = [
+
+    "home",
+    "city",
+    "life",
+    "money"
+
+  ];
+
+
+  tabs.forEach(name => {
+
+    document
+      .getElementById(name + "Tab")
+      .classList.add("hidden");
+
+  });
+
+
+  document
+    .getElementById(tab + "Tab")
+    .classList.remove("hidden");
+
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button => {
+
+      button.classList.remove("active");
+
+    });
+
+
+  document
+    .getElementById("nav" + capitalize(tab))
+    .classList.add("active");
+
+
+  render();
+
+}
+
+
+function capitalize(word) {
+
+  return word.charAt(0).toUpperCase()
+    + word.slice(1);
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render() {
+
+  if (!player) return;
+
+
+  document.getElementById("headerName").textContent =
+    "👤 " + player.name;
+
+
+  document.getElementById("headerLocation").textContent =
+    "📍 " + player.location;
+
+
+  document.getElementById("headerDay").textContent =
+    "DAY " + player.day;
+
+
+  document.getElementById("cashDisplay").textContent =
+    naira(player.cash);
+
+
+  document.getElementById("bankDisplay").textContent =
+    naira(player.bank);
+
+
+  renderStats();
+
+  renderHome();
+
+  renderCity();
+
+  renderLife();
+
+  renderMoney();
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function statHTML(name, value) {
+
+  value = clamp(value, 0, 100);
+
+  return `
+
+    <div class="stat">
+
+      <div class="stat-line">
+
+        <span>${name}</span>
+
+        <b>${Math.round(value)}%</b>
+
+      </div>
+
+      <div class="bar">
+
+        <span style="width:${value}%"></span>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderStats() {
+
+  document.getElementById("mainStats").innerHTML =
+
+    statHTML("⚡ Energy", player.energy) +
+
+    statHTML("🍗 Hunger", player.hunger) +
+
+    statHTML("❤️ Happiness", player.happiness) +
+
+    statHTML("💪 Health", player.health) +
+
+    statHTML("⭐ Reputation", player.reputation);
+
+
+  document.getElementById("lifeStats").innerHTML =
+
+    statHTML("🎓 Education", player.education) +
+
+    statHTML("🔴 Underground Risk", player.risk) +
+
+    statHTML("🔓 Freedom", player.freedom);
+
+
+  document.getElementById("educationValue").textContent =
+    Math.round(player.education);
+
+
+  document.getElementById("educationBar").style.width =
+    player.education + "%";
+
+
+  document.getElementById("followers").textContent =
+    player.followers.toLocaleString();
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function renderHome() {
+
+  document.getElementById("homeInfo").innerHTML = `
+
+    <div class="stat-line">
+
+      <span>Home</span>
+
+      <b>${player.home}</b>
+
+    </div>
+
+    <div class="stat-line">
+
+      <span>Daily rent</span>
+
+      <b>${naira(player.rent)}</b>
+
+    </div>
+
+    <div class="stat-line">
+
+      <span>Car</span>
+
+      <b>${player.car}</b>
+
+    </div>
+
+  `;
+
+
+  document.getElementById("eventLog").innerHTML =
+
+    player.log
+
+      .map(event => `<div>${event}</div>`)
+
+      .join("");
+
+}
+
+
+/* =========================
+   CITY
+========================= */
+
+function renderCity() {
+
+  const locations = [
+
+    [
+      "Ugbowo",
+      "🎓",
+      "Student life, food and education"
+    ],
+
+    [
+      "Ring Road",
+      "🏙️",
+      "Shopping, jobs and entertainment"
+    ],
+
+    [
+      "New Benin",
+      "🛍️",
+      "Markets and trading"
+    ],
+
+    [
+      "GRA",
+      "💎",
+      "Premium lifestyle and luxury"
+    ],
+
+    [
+      "Ekewan",
+      "🏘️",
+      "Residential life"
+    ],
+
+    [
+      "Airport Road",
+      "🚗",
+      "Hotels, restaurants and businesses"
+    ]
+
+  ];
+
+
+  document.getElementById("cityLocations").innerHTML =
+
+    locations.map(place => `
+
+      <div class="card">
+
+        <h3>
+          ${place[1]} ${place[0]}
+        </h3>
+
+        <p class="muted">
+          ${place[2]}
+        </p>
+
+        <button
+          class="btn"
+          onclick="travel('${place[0]}')"
+        >
+          Travel · ₦500
+        </button>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   LIFE
+========================= */
+
+function renderLife() {
+
+  document.getElementById("partnerInfo").innerHTML =
+
+    player.partner
+
+      ? `<p style="margin-top:10px">
+          ❤️ Partner: <b>${player.partner}</b>
+         </p>`
+
+      : `<p class="muted" style="margin-top:10px">
+          You are currently single.
+         </p>`;
+
+
+  const cars = [
+
+    ["Keke", 350000],
+
+    ["Used Sedan", 2500000],
+
+    ["SUV", 7500000],
+
+    ["Luxury Car", 18000000]
+
+  ];
+
+
+  document.getElementById("cars").innerHTML =
+
+    cars.map(car => `
+
+      <div class="card">
+
+        <h3>🚗 ${car[0]}</h3>
+
+        <p>${naira(car[1])}</p>
+
+        <button
+          class="btn"
+          onclick="buyCar('${car[0]}', ${car[1]})"
+        >
+          Buy
+        </button>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   MONEY
+========================= */
+
+function renderMoney() {
+
+  document.getElementById("currentJob").textContent =
+    player.job;
+
+
+  document.getElementById("underLevel").textContent =
+    player.undergroundLevel;
+
+
+  const payout =
+    player.undergroundLevel * 1000;
+
+
+  document.getElementById("underPayout").textContent =
+    dollars(payout);
+
+
+  document.getElementById("risk").textContent =
+    player.risk;
+
+
+  document.getElementById("freedom").textContent =
+    player.freedom;
+
+
+  document.getElementById("businessInfo").textContent =
+
+    player.business
+      ? player.business
+      : "You don't own a business yet.";
+
+}
+
+
+/* =========================
+   TRAVEL
+========================= */
+
+function travel(place) {
+
+  if (player.cash < 500) {
+
+    notify("You need ₦500 for transport.");
+
+    return;
+
+  }
+
+
+  player.cash -= 500;
+
+  player.energy =
+    clamp(player.energy - 8, 0, 100);
+
+  player.happiness =
+    clamp(player.happiness + 3, 0, 100);
+
+
+  player.location = place;
+
+
+  addLog(
+    "Travelled to " + place + " 🚕"
+  );
+
+
+  notify(
+    "You arrived at " + place
+  );
+
+
+  render();
+
+}
+
+
+/* =========================
+   GAME ACTIONS
+========================= */
+
+function gameAction(action) {
+
+
+  /* SLEEP */
+
+  if (action === "sleep") {
+
+    player.day++;
+
+    player.cash =
+      Math.max(0, player.cash - player.rent);
+
+    player.energy = 95;
+
+    player.hunger = 35;
+
+    player.happiness =
+      clamp(player.happiness + 5, 0, 100);
+
+
+    undergroundDailyPayout();
+
+    randomEvent();
+
+    addLog(
+      "You slept and started a new day 😴"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* FOOD */
+
+  if (action === "eat") {
+
+    if (player.cash < 1500) {
+
+      notify("You need ₦1,500.");
+
+      return;
+
+    }
+
+
+    player.cash -= 1500;
+
+    player.hunger =
+      clamp(player.hunger - 35, 0, 100);
+
+    player.energy =
+      clamp(player.energy + 10, 0, 100);
+
+    player.health =
+      clamp(player.health + 2, 0, 100);
+
+
+    addLog(
+      "You bought food 🍛"
+    );
+
+
+    notify("You enjoyed your meal.");
+
+    render();
+
+    return;
+
+  }
+
+
+  /* WORK */
+
+  if (action === "work") {
+
+    if (player.energy < 20) {
+
+      notify("You're too tired to work.");
+
+      return;
+
+    }
+
+
+    player.cash += 8000;
+
+    player.energy -= 20;
+
+    player.reputation =
+      clamp(player.reputation + 2, 0, 100);
+
+
+    addLog(
+      "Worked a shift and earned ₦8,000 💼"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* STUDY */
+
+  if (action === "study") {
+
+    if (player.energy < 20) {
+
+      notify("You don't have enough energy.");
+
+      return;
+
+    }
+
+
+    player.energy -= 20;
+
+    player.education =
+      clamp(player.education + 8, 0, 100);
+
+    player.happiness =
+      clamp(player.happiness - 2, 0, 100);
+
+
+    addLog(
+      "You studied hard 📚"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* MEET SOMEONE */
+
+  if (action === "meet") {
+
+    if (player.cash < 1000) {
+
+      notify("You need ₦1,000.");
+
+      return;
+
+    }
+
+
+    player.cash -= 1000;
+
+    player.happiness =
+      clamp(player.happiness + 8, 0, 100);
+
+
+    const names = [
+
+      "Amaka",
+      "Efe",
+      "Osaro",
+      "Ivie"
+
+    ];
+
+
+    player.partner =
+      player.partner ||
+      names[Math.floor(
+        Math.random() * names.length
+      )];
+
+
+    player.reputation++;
+
+
+    addLog(
+      "You met " + player.partner + " ❤️"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* FRIENDS */
+
+  if (action === "friends") {
+
+    if (player.cash < 800) {
+
+      notify("You need ₦800.");
+
+      return;
+
+    }
+
+
+    player.cash -= 800;
+
+    player.happiness =
+      clamp(player.happiness + 7, 0, 100);
+
+    player.reputation =
+      clamp(player.reputation + 2, 0, 100);
+
+
+    addLog(
+      "You hung out with friends 🤝"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* SOCIAL POST */
+
+  if (action === "post") {
+
+    const followers =
+      100 + Math.floor(
+        Math.random() * 900
+      );
+
+
+    player.followers += followers;
+
+    player.happiness =
+      clamp(player.happiness + 3, 0, 100);
+
+
+    addLog(
+      "Your post gained "
+      + followers
+      + " followers 📱"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* TREND */
+
+  if (action === "trend") {
+
+    if (player.cash < 2000) {
+
+      notify("You need ₦2,000.");
+
+      return;
+
+    }
+
+
+    player.cash -= 2000;
+
+
+    const followers =
+      1000 +
+      Math.floor(
+        Math.random() * 9000
+      );
+
+
+    player.followers += followers;
+
+    player.reputation =
+      clamp(player.reputation + 3, 0, 100);
+
+
+    addLog(
+      "Your trend gained "
+      + followers
+      + " followers 🔥"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* BUSINESS */
+
+  if (action === "business") {
+
+    if (player.business) {
+
+      notify("You already own a business.");
+
+      return;
+
+    }
+
+
+    if (player.cash < 100000) {
+
+      notify(
+        "You need ₦100,000 to start."
+      );
+
+      return;
+
+    }
+
+
+    player.cash -= 100000;
+
+    player.business =
+      "🍔 Small Food Business";
+
+    player.reputation =
+      clamp(player.reputation + 5, 0, 100);
+
+
+    addLog(
+      "You started a food business 🏪"
+    );
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* UNDERGROUND */
+
+  if (action === "join") {
+
+    if (!player.underground) {
+
+      player.underground = true;
+
+      player.undergroundLevel = 1;
+
+      player.risk = 20;
+
+
+      addLog(
+        "You entered the fictional underground career 🕶️"
+      );
+
+
+      notify(
+        "Level 1 unlocked."
+      );
+
+    } else {
+
+      notify(
+        "Your next payout arrives when you sleep."
+      );
+
+    }
+
+
+    render();
+
+    return;
+
+  }
+
+
+  /* LEVEL UP */
+
+  if (action === "level") {
+
+    if (!player.underground) {
+
+      notify(
+        "Enter the underground career first."
+      );
+
+      return;
+
+    }
+
+
+    if (player.risk >= 85) {
+
+      notify(
+        "Risk is too high to level up."
+      );
+
+      return;
+
+    }
+
+
+    const chance =
+      45 +
+      player.reputation / 4;
+
+
+    if (
+      Math.random() * 100 <
+      chance
+    ) {
+
+      player.undergroundLevel++;
+
+      player.risk =
+        clamp(
+          player.risk + 15,
+          0,
+          100
+        );
+
+
+      player.reputation =
+        clamp(
+          player.reputation + 4,
+          0,
+          100
+        );
+
+
+      addLog(
+        "Underground level increased to "
+        + player.undergroundLevel
+        + " 🕶️"
+      );
+
+
+      notify("LEVEL UP!");
+
+    } else {
+
+      player.risk =
+        clamp(
+          player.risk + 8,
+          0,
+          100
+        );
+
+
+      player.cash =
+        Math.max(
+          0,
+          player.cash - 5000
+        );
+
+
+      addLog(
+        "Level-up attempt failed. Lost ₦5,000."
+      );
+
+
+      notify(
+        "Level-up failed."
+      );
+
+    }
+
+
+    render();
+
+  }
+
+}
+
+
+/* =========================
+   DAILY UNDERGROUND PAYOUT
+========================= */
+
+function undergroundDailyPayout() {
+
+  if (!player.underground) return;
+
+
+  const payout =
+    player.undergroundLevel * 1000;
+
+
+  player.cash += payout;
+
+
+  player.risk =
+    clamp(
+      player.risk + 5,
+      0,
+      100
+    );
+
+
+  addLog(
+    "Fictional underground payout: "
+    + dollars(payout)
+  );
+
+
+  /*
+    High risk event.
+  */
+
+  if (player.risk >= 90) {
+
+    player.freedom =
+      clamp(
+        player.freedom - 20,
+        0,
+        100
+      );
+
+
+    player.cash =
+      Math.max(
+        0,
+        player.cash - 20000
+      );
+
+
+    player.undergroundLevel =
+      Math.max(
+        0,
+        player.undergroundLevel - 1
+      );
+
+
+    player.risk = 55;
+
+
+    addLog(
+      "🚨 Fictional crackdown event! "
+      + "You lost cash and one level."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   RANDOM EVENTS
+========================= */
+
+function randomEvent() {
+
+  if (Math.random() > 0.45) {
+    return;
+  }
+
+
+  const events = [
+
+    function() {
+
+      player.cash += 3000;
+
+      addLog(
+        "Someone rewarded you ₦3,000 for helping them 🤝"
+      );
+
+    },
+
+
+    function() {
+
+      player.cash =
+        Math.max(
+          0,
+          player.cash - 2500
+        );
+
+      player.health =
+        clamp(
+          player.health - 4,
+          0,
+          100
+        );
+
+      addLog(
+        "Unexpected expense: ₦2,500."
+      );
+
+    },
+
+
+    function() {
+
+      player.followers += 500;
+
+      player.reputation =
+        clamp(
+          player.reputation + 2,
+          0,
+          100
+        );
+
+      addLog(
+        "A post about you went around town 📱"
+      );
+
+    },
+
+
+    function() {
+
+      player.happiness =
+        clamp(
+          player.happiness + 10,
+          0,
+          100
+        );
+
+      addLog(
+        "You had a surprisingly great day 😄"
+      );
+
+    },
+
+
+    function() {
+
+      player.energy =
+        clamp(
+          player.energy - 10,
+          0,
+          100
+        );
+
+      addLog(
+        "Traffic drained your energy 🚗"
+      );
+
+    }
+
+  ];
+
+
+  const event =
+    events[
+      Math.floor(
+        Math.random() * events.length
+      )
+    ];
+
+
+  event();
+
+}
+
+
+/* =========================
+   BUY CAR
+========================= */
+
+function buyCar(name, price) {
+
+  if (player.car !== "None") {
+
+    notify(
+      "You already own a car."
+    );
+
+    return;
+
+  }
+
+
+  if (player.cash < price) {
+
+    notify(
+      "You cannot afford this car yet."
+    );
+
+    return;
+
+  }
+
+
+  player.cash -= price;
+
+  player.car = name;
+
+  player.happiness =
+    clamp(
+      player.happiness + 10,
+      0,
+      100
+    );
+
+
+  addLog(
+    "You bought a "
+    + name
+    + " 🚗"
+  );
+
+
+  notify(
+    "You bought a " + name + "!"
+  );
+
+
+  render();
+
+}
+
+</script>
+
+</body>
+</html>
