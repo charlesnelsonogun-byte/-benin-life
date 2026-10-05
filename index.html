@@ -2,1567 +2,2125 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Benin Life 🇳🇬</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClothLab — Clothing Designer</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{
+*{
+  box-sizing:border-box;
   margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#101010;
-  font-family:Arial,sans-serif;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#08090d;
   color:white;
-  touch-action:none;
+  min-height:100vh;
 }
-#game{
-  position:relative;
-  width:100%;
-  height:100%;
-  aspect-ratio:16/9;
-  margin:auto;
-  overflow:hidden;
-  background:#777;
+
+button,input,select{
+  font:inherit;
 }
-canvas{
-  display:block;
-  width:100%;
-  height:100%;
+
+button{
+  cursor:pointer;
 }
-#hud{
-  position:absolute;
-  top:12px;
-  left:12px;
-  right:12px;
+
+header{
+  height:70px;
+  background:#11131a;
+  border-bottom:1px solid #292c36;
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  pointer-events:none;
+  padding:0 18px;
+  position:sticky;
+  top:0;
+  z-index:50;
 }
-.panel{
-  background:rgba(10,15,20,.82);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:12px;
-  padding:10px 13px;
-  backdrop-filter:blur(5px);
+
+.logo{
+  font-size:22px;
+  font-weight:900;
 }
-#stats{
-  min-width:180px;
+
+.logo span{
+  color:#8b5cf6;
 }
-#money{
-  color:#ffd45a;
-  font-size:20px;
-  font-weight:bold;
-}
-.small{
-  font-size:12px;
-  opacity:.75;
-}
-#location{
-  font-weight:bold;
-}
-#message{
-  position:absolute;
-  left:50%;
-  bottom:16%;
-  transform:translateX(-50%);
-  width:min(440px,88%);
-  text-align:center;
-  background:rgba(8,12,18,.9);
-  padding:12px;
-  border-radius:12px;
-  display:none;
-}
-#chat{
-  position:absolute;
-  right:12px;
-  bottom:90px;
-  width:250px;
-  max-height:180px;
-  overflow:hidden;
-  background:rgba(8,12,18,.82);
-  border-radius:12px;
-  padding:10px;
-  font-size:12px;
-}
-.chatLine{
-  padding:5px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-#controls{
-  position:absolute;
-  bottom:15px;
-  left:15px;
-  right:15px;
+
+.header-buttons{
   display:flex;
-  justify-content:space-between;
-  align-items:end;
-  pointer-events:none;
-}
-#joystick{
-  width:125px;
-  height:125px;
-  border-radius:50%;
-  background:rgba(255,255,255,.12);
-  border:2px solid rgba(255,255,255,.2);
-  position:relative;
-  pointer-events:auto;
-}
-#stick{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  background:rgba(255,255,255,.45);
-  position:absolute;
-  left:37px;
-  top:37px;
-}
-.actions{
-  display:grid;
-  grid-template-columns:repeat(2,65px);
   gap:8px;
-  pointer-events:auto;
 }
-.actions button{
-  width:65px;
-  height:52px;
-  border:0;
-  border-radius:12px;
-  background:rgba(10,15,20,.86);
+
+.btn{
+  border:1px solid #30333e;
+  background:#181b23;
   color:white;
-  font-weight:bold;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:700;
 }
-.actions button:active{
-  transform:scale(.95);
-  background:#c99127;
+
+.btn:hover{
+  background:#252936;
 }
-#start{
-  position:absolute;
-  inset:0;
+
+.btn.primary{
+  background:#7c3aed;
+  border-color:#7c3aed;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:260px 1fr 280px;
+  min-height:calc(100vh - 70px);
+}
+
+/* LEFT */
+
+.sidebar{
+  background:#101218;
+  border-right:1px solid #292c36;
+  padding:18px;
+  overflow-y:auto;
+}
+
+.section{
+  margin-bottom:24px;
+}
+
+.section-title{
+  font-size:12px;
+  color:#8e93a1;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:10px;
+  font-weight:800;
+}
+
+.garments{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.garment{
+  background:#181b23;
+  border:1px solid #2b2e38;
+  border-radius:12px;
+  padding:12px 5px;
+  text-align:center;
+  transition:.2s;
+}
+
+.garment:hover{
+  border-color:#8b5cf6;
+  transform:translateY(-2px);
+}
+
+.garment.active{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 1px #8b5cf6;
+}
+
+.garment-icon{
+  height:65px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:42px;
+}
+
+.garment-name{
+  font-size:12px;
+  font-weight:700;
+}
+
+.color-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.color{
+  width:31px;
+  height:31px;
+  border-radius:50%;
+  border:2px solid #30333e;
+}
+
+.color.active{
+  border-color:white;
+  box-shadow:0 0 0 2px #7c3aed;
+}
+
+.tool-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.tool{
+  width:100%;
+  text-align:left;
+  background:#181b23;
+  color:white;
+  border:1px solid #2b2e38;
+  padding:11px;
+  border-radius:10px;
+}
+
+.tool:hover{
+  background:#242732;
+}
+
+/* CENTER */
+
+.workspace{
+  background:
+    radial-gradient(circle at 50% 30%,#171927 0,#0c0e13 50%,#08090d 100%);
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.workspace-top{
+  height:55px;
+  border-bottom:1px solid #292c36;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(#111827,#20170c);
-  z-index:20;
+  gap:12px;
 }
-.startBox{
-  width:min(420px,90%);
-  background:#111923;
-  border:1px solid #354457;
+
+.view-btn{
+  border:1px solid #30333e;
+  background:#15171e;
+  color:#aaa;
+  padding:7px 16px;
   border-radius:20px;
-  padding:25px;
+}
+
+.view-btn.active{
+  background:#7c3aed;
+  color:white;
+  border-color:#7c3aed;
+}
+
+.canvas-area{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:35px;
+  overflow:auto;
+}
+
+.design-stage{
+  position:relative;
+  width:min(470px,80vw);
+  aspect-ratio:3/4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.shirt{
+  position:relative;
+  width:390px;
+  height:470px;
+  transition:.3s;
+}
+
+.shirt-body{
+  position:absolute;
+  width:245px;
+  height:350px;
+  left:72px;
+  top:70px;
+  border-radius:12px 12px 20px 20px;
+  background:#f3f3f3;
+  box-shadow:0 18px 40px rgba(0,0,0,.45);
+}
+
+.sleeve{
+  position:absolute;
+  width:120px;
+  height:150px;
+  background:#f3f3f3;
+  top:65px;
+  border-radius:25px;
+  z-index:0;
+}
+
+.sleeve.left{
+  left:10px;
+  transform:rotate(27deg);
+}
+
+.sleeve.right{
+  right:10px;
+  transform:rotate(-27deg);
+}
+
+.neck{
+  position:absolute;
+  z-index:5;
+  width:80px;
+  height:38px;
+  border-radius:50%;
+  background:#08090d;
+  left:155px;
+  top:60px;
+}
+
+.clothing-art{
+  position:absolute;
+  z-index:10;
+  left:50%;
+  top:190px;
+  transform:translate(-50%,-50%);
+  width:190px;
+  min-height:80px;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  pointer-events:none;
+}
+
+.art-logo{
+  font-size:44px;
+  font-weight:1000;
+  letter-spacing:-3px;
+  text-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+
+.art-sub{
+  font-size:12px;
+  letter-spacing:5px;
+  margin-top:4px;
+}
+
+.design-element{
+  position:absolute;
+  z-index:20;
+  cursor:move;
+  user-select:none;
+  border:1px dashed transparent;
+  padding:5px;
+}
+
+.design-element.selected{
+  border-color:#8b5cf6;
+}
+
+.design-element img{
+  max-width:180px;
+  max-height:180px;
+  display:block;
+}
+
+.text-element{
+  font-size:32px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.stage-tools{
+  position:absolute;
+  bottom:15px;
+  display:flex;
+  gap:8px;
+  background:#12141b;
+  padding:8px;
+  border:1px solid #292c36;
+  border-radius:12px;
+}
+
+/* RIGHT */
+
+.rightbar{
+  background:#101218;
+  border-left:1px solid #292c36;
+  padding:18px;
+  overflow-y:auto;
+}
+
+.property{
+  background:#181b23;
+  border:1px solid #2b2e38;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+.property h3{
+  font-size:14px;
+  margin-bottom:13px;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+.field label{
+  display:block;
+  color:#999eac;
+  font-size:11px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field select{
+  width:100%;
+  background:#0d0f14;
+  color:white;
+  border:1px solid #30333e;
+  padding:9px;
+  border-radius:8px;
+}
+
+.range{
+  width:100%;
+}
+
+.action-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.action{
+  background:#20232c;
+  color:white;
+  border:1px solid #30333e;
+  padding:9px;
+  border-radius:8px;
+}
+
+.empty{
+  color:#858a98;
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:#151820;
+  border:1px solid #30333e;
+  width:min(500px,100%);
+  padding:22px;
+  border-radius:18px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.modal-title{
+  font-size:20px;
+  font-weight:900;
+}
+
+.close{
+  background:none;
+  border:0;
+  color:white;
+  font-size:24px;
+}
+
+.template-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.template{
+  background:#20232c;
+  border:1px solid #30333e;
+  padding:20px;
+  border-radius:12px;
   text-align:center;
 }
-.startBox h1{
-  font-size:38px;
-  margin:0 0 5px;
+
+@media(max-width:1000px){
+  .app{
+    grid-template-columns:210px 1fr;
+  }
+
+  .rightbar{
+    display:none;
+  }
 }
-.startBox p{
-  opacity:.7;
-}
-input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #39485a;
-  background:#080d14;
-  color:white;
-  margin:12px 0;
-}
-.startBtn{
-  width:100%;
-  padding:15px;
-  border:0;
-  border-radius:11px;
-  background:#e5a52f;
-  font-weight:bold;
-}
-#mission{
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  background:#182332;
-  font-size:12px;
-}
+
 @media(max-width:700px){
-  #chat{display:none}
-  #stats{min-width:145px}
-  #money{font-size:17px}
-  .panel{padding:8px 10px}
+  header{
+    height:60px;
+  }
+
+  .app{
+    display:block;
+  }
+
+  .sidebar{
+    border-right:0;
+    border-bottom:1px solid #292c36;
+    max-height:250px;
+  }
+
+  .garments{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .garment-icon{
+    font-size:30px;
+    height:45px;
+  }
+
+  .canvas-area{
+    min-height:600px;
+    padding:15px;
+  }
+
+  .shirt{
+    transform:scale(.8);
+  }
+
+  .header-buttons .btn{
+    padding:7px 9px;
+    font-size:11px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<header>
+  <div class="logo">CLOTH<span>LAB</span> ✦</div>
 
-<canvas id="scene"></canvas>
+  <div class="header-buttons">
+    <button class="btn" onclick="undo()">↶</button>
+    <button class="btn" onclick="redo()">↷</button>
+    <button class="btn" onclick="newDesign()">New</button>
+    <button class="btn primary" onclick="exportDesign()">Export PNG</button>
+  </div>
+</header>
 
-<div id="start">
-  <div class="startBox">
-    <h1>🇳🇬 BENIN LIFE</h1>
-    <p>Your life. Your choices. Your Benin.</p>
+<div class="app">
 
-    <input id="nameInput"
-           maxlength="20"
-           placeholder="Enter your character name">
+<!-- LEFT SIDEBAR -->
 
-    <button class="startBtn" id="startBtn">
-      ENTER BENIN CITY 🚀
+<aside class="sidebar">
+
+  <div class="section">
+    <div class="section-title">Garment</div>
+
+    <div class="garments">
+
+      <button class="garment active" onclick="selectGarment('shirt',this)">
+        <div class="garment-icon">👕</div>
+        <div class="garment-name">T-Shirt</div>
+      </button>
+
+      <button class="garment" onclick="selectGarment('hoodie',this)">
+        <div class="garment-icon">🧥</div>
+        <div class="garment-name">Hoodie</div>
+      </button>
+
+      <button class="garment" onclick="selectGarment('jersey',this)">
+        <div class="garment-icon">🏀</div>
+        <div class="garment-name">Jersey</div>
+      </button>
+
+      <button class="garment" onclick="selectGarment('jacket',this)">
+        <div class="garment-icon">🧥</div>
+        <div class="garment-name">Jacket</div>
+      </button>
+
+      <button class="garment" onclick="selectGarment('shorts',this)">
+        <div class="garment-icon">🩳</div>
+        <div class="garment-name">Shorts</div>
+      </button>
+
+      <button class="garment" onclick="selectGarment('cap',this)">
+        <div class="garment-icon">🧢</div>
+        <div class="garment-name">Cap</div>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Garment Color</div>
+
+    <div class="color-row">
+
+      <button class="color active" style="background:#f5f5f5"
+      onclick="changeColor('#f5f5f5',this)"></button>
+
+      <button class="color" style="background:#050505"
+      onclick="changeColor('#050505',this)"></button>
+
+      <button class="color" style="background:#ef4444"
+      onclick="changeColor('#ef4444',this)"></button>
+
+      <button class="color" style="background:#2563eb"
+      onclick="changeColor('#2563eb',this)"></button>
+
+      <button class="color" style="background:#16a34a"
+      onclick="changeColor('#16a34a',this)"></button>
+
+      <button class="color" style="background:#facc15"
+      onclick="changeColor('#facc15',this)"></button>
+
+      <button class="color" style="background:#7c3aed"
+      onclick="changeColor('#7c3aed',this)"></button>
+
+      <button class="color" style="background:#ec4899"
+      onclick="changeColor('#ec4899',this)"></button>
+
+      <button class="color" style="background:#9ca3af"
+      onclick="changeColor('#9ca3af',this)"></button>
+
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Add</div>
+
+    <div class="tool-list">
+
+      <button class="tool" onclick="addText()">
+        T&nbsp;&nbsp; Add Text
+      </button>
+
+      <button class="tool" onclick="document.getElementById('imageInput').click()">
+        🖼️ Add Image / Logo
+      </button>
+
+      <button class="tool" onclick="addShape('circle')">
+        ● Add Circle
+      </button>
+
+      <button class="tool" onclick="addShape('square')">
+        ■ Add Square
+      </button>
+
+      <button class="tool" onclick="addShape('star')">
+        ★ Add Star
+      </button>
+
+      <button class="tool" onclick="toggleDrawing()">
+        ✏️ Drawing Mode
+      </button>
+
+      <input
+        id="imageInput"
+        type="file"
+        accept="image/*"
+        style="display:none"
+        onchange="uploadImage(event)"
+      >
+
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Templates</div>
+
+    <div class="tool-list">
+
+      <button class="tool" onclick="openTemplates()">
+        ✦ Streetwear Templates
+      </button>
+
+      <button class="tool" onclick="applyTemplate('minimal')">
+        Minimal
+      </button>
+
+      <button class="tool" onclick="applyTemplate('street')">
+        Street
+      </button>
+
+      <button class="tool" onclick="applyTemplate('sport')">
+        Sport
+      </button>
+
+    </div>
+
+  </div>
+
+</aside>
+
+
+<!-- CENTER -->
+
+<main class="workspace">
+
+  <div class="workspace-top">
+
+    <button class="view-btn active" id="frontBtn"
+      onclick="setView('front')">
+      FRONT
     </button>
 
-    <div id="mission">
-      Explore the city, meet NPCs, work, eat,
-      travel and build your life.
+    <button class="view-btn"
+      id="backBtn"
+      onclick="setView('back')">
+      BACK
+    </button>
+
+  </div>
+
+  <div class="canvas-area">
+
+    <div class="design-stage" id="designStage">
+
+      <div class="shirt" id="shirt">
+
+        <div class="sleeve left garmentPart"></div>
+        <div class="sleeve right garmentPart"></div>
+
+        <div class="shirt-body garmentPart"></div>
+
+        <div class="neck"></div>
+
+        <div
+          class="clothing-art"
+          id="defaultLogo"
+        >
+          <div class="art-logo">YOUR</div>
+          <div class="art-logo">BRAND</div>
+          <div class="art-sub">EST. 2026</div>
+        </div>
+
+      </div>
+
+      <div class="stage-tools">
+
+        <button class="action" onclick="zoom(-10)">−</button>
+        <button class="action" onclick="zoom(10)">+</button>
+        <button class="action" onclick="resetZoom()">Reset</button>
+
+      </div>
+
     </div>
-  </div>
-</div>
 
-<div id="hud">
-  <div class="panel" id="stats">
-    <div id="playerName">Player</div>
-    <div id="location">Ugbowo</div>
-    <div id="money">₦15,000</div>
-    <div class="small">
-      ❤️ <span id="health">100</span>
-      &nbsp; ⚡ <span id="energy">100</span>
+  </div>
+
+</main>
+
+
+<!-- RIGHT -->
+
+<aside class="rightbar">
+
+  <div class="property">
+
+    <h3>Design</h3>
+
+    <div class="field">
+      <label>Design Name</label>
+      <input
+        type="text"
+        id="designName"
+        value="My New Design"
+        onchange="saveState()"
+      >
     </div>
+
+    <div class="field">
+      <label>Garment</label>
+
+      <select id="garmentSelect"
+        onchange="selectGarment(this.value)">
+        <option value="shirt">T-Shirt</option>
+        <option value="hoodie">Hoodie</option>
+        <option value="jersey">Jersey</option>
+        <option value="jacket">Jacket</option>
+        <option value="shorts">Shorts</option>
+        <option value="cap">Cap</option>
+      </select>
+
+    </div>
+
   </div>
 
-  <div class="panel">
-    <div id="clock">08:00</div>
-    <div class="small">DAY <span id="day">1</span></div>
+
+  <div class="property">
+
+    <h3>Selected Element</h3>
+
+    <div id="elementControls">
+
+      <div class="empty">
+        Select an element on the garment to edit it.
+      </div>
+
+    </div>
+
   </div>
+
+
+  <div class="property">
+
+    <h3>Layer</h3>
+
+    <div class="action-grid">
+
+      <button class="action" onclick="bringForward()">
+        ↑ Forward
+      </button>
+
+      <button class="action" onclick="sendBackward()">
+        ↓ Back
+      </button>
+
+      <button class="action" onclick="duplicateSelected()">
+        Duplicate
+      </button>
+
+      <button class="action" onclick="deleteSelected()">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="property">
+
+    <h3>Quick Actions</h3>
+
+    <div class="action-grid">
+
+      <button class="action" onclick="centerSelected()">
+        Center
+      </button>
+
+      <button class="action" onclick="resetDesign()">
+        Reset
+      </button>
+
+      <button class="action" onclick="saveProject()">
+        Save
+      </button>
+
+      <button class="action" onclick="loadProject()">
+        Load
+      </button>
+
+    </div>
+
+  </div>
+
+</aside>
+
 </div>
 
-<div id="message"></div>
 
-<div id="chat"></div>
+<!-- TEMPLATE MODAL -->
 
-<div id="controls">
+<div class="modal" id="templateModal">
 
-  <div id="joystick">
-    <div id="stick"></div>
-  </div>
+  <div class="modal-box">
 
-  <div class="actions">
-    <button id="talk">💬</button>
-    <button id="work">💼</button>
-    <button id="eat">🍛</button>
-    <button id="car">🚗</button>
-    <button id="run">🏃</button>
-    <button id="map">🗺️</button>
+    <div class="modal-head">
+
+      <div class="modal-title">
+        Choose Template
+      </div>
+
+      <button class="close"
+        onclick="closeTemplates()">
+        ×
+      </button>
+
+    </div>
+
+    <div class="template-grid">
+
+      <button class="template"
+        onclick="applyTemplate('minimal');closeTemplates()">
+        <div style="font-size:40px">◇</div>
+        <br>
+        Minimal
+      </button>
+
+      <button class="template"
+        onclick="applyTemplate('street');closeTemplates()">
+        <div style="font-size:40px">★</div>
+        <br>
+        Streetwear
+      </button>
+
+      <button class="template"
+        onclick="applyTemplate('sport');closeTemplates()">
+        <div style="font-size:40px">⚡</div>
+        <br>
+        Sport
+      </button>
+
+      <button class="template"
+        onclick="applyTemplate('luxury');closeTemplates()">
+        <div style="font-size:40px">✦</div>
+        <br>
+        Luxury
+      </button>
+
+    </div>
+
   </div>
 
 </div>
 
-</div>
 
-<script type="module">
+<script>
 
-import * as THREE from
-"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+/* =========================================================
+   CLOTHLAB ENGINE
+========================================================= */
 
-/* =====================================================
-   BENIN LIFE — LOW GRAPHICS 3D WEB GAME
-===================================================== */
+let selectedElement = null;
+let currentView = "front";
+let currentColor = "#f5f5f5";
+let zoomLevel = 1;
 
-const canvas=document.getElementById("scene");
+let history = [];
+let historyIndex = -1;
 
-const renderer=new THREE.WebGLRenderer({
-  canvas,
-  antialias:false,
-  powerPreference:"high-performance"
-});
 
-renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio,1.25)
-);
+/* =========================================================
+   HISTORY
+========================================================= */
 
-renderer.setSize(
-  canvas.clientWidth,
-  canvas.clientHeight,
-  false
-);
+function saveState(){
 
-renderer.shadowMap.enabled=false;
+  const stage = document.getElementById("designStage");
 
-const scene=new THREE.Scene();
-
-scene.background=new THREE.Color(0x87a9c7);
-
-const camera=new THREE.PerspectiveCamera(
-  55,
-  16/9,
-  .1,
-  700
-);
-
-camera.position.set(0,8,12);
-
-
-/* =====================================================
-   GAME STATE
-===================================================== */
-
-let started=false;
-
-const player={
-  name:"Player",
-  money:15000,
-  health:100,
-  energy:100,
-  happiness:70,
-  day:1,
-  hour:8,
-  location:"Ugbowo",
-  job:"Student",
-  walking:true,
-  inCar:false,
-  speed:0.09,
-  reputation:0
-};
-
-
-/* =====================================================
-   LIGHTING
-===================================================== */
-
-const hemi=new THREE.HemisphereLight(
-  0xffffff,
-  0x45513a,
-  1.8
-);
-
-scene.add(hemi);
-
-const sun=new THREE.DirectionalLight(
-  0xffffff,
-  1.5
-);
-
-sun.position.set(80,100,40);
-scene.add(sun);
-
-
-/* =====================================================
-   WORLD
-===================================================== */
-
-const world=new THREE.Group();
-scene.add(world);
-
-const ground=new THREE.Mesh(
-  new THREE.PlaneGeometry(500,500),
-  new THREE.MeshLambertMaterial({
-    color:0x5d7652
-  })
-);
-
-ground.rotation.x=-Math.PI/2;
-world.add(ground);
-
-
-/* =====================================================
-   ROAD CREATOR
-===================================================== */
-
-function road(x,z,w,d){
-
-  const r=new THREE.Mesh(
-    new THREE.BoxGeometry(w,.05,d),
-    new THREE.MeshLambertMaterial({
-      color:0x30343a
-    })
-  );
-
-  r.position.set(x,.03,z);
-  world.add(r);
-
-  return r;
-}
-
-
-/* MAIN ROADS */
-
-road(0,0,28,500);
-road(0,0,500,28);
-road(80,80,25,300);
-road(-90,-80,25,300);
-
-
-/* ROAD LINES */
-
-function roadLine(x,z,w,d){
-
-  const line=new THREE.Mesh(
-    new THREE.BoxGeometry(w,.06,d),
-    new THREE.MeshBasicMaterial({
-      color:0xf1d36a
-    })
-  );
-
-  line.position.set(x,.07,z);
-  world.add(line);
-}
-
-for(let i=-220;i<220;i+=20){
-
-  roadLine(0,i,.35,8);
-  roadLine(i,0,8,.35);
-
-}
-
-
-/* =====================================================
-   BUILDINGS
-===================================================== */
-
-function building(x,z,w,h,d,color,name){
-
-  const group=new THREE.Group();
-
-  const body=new THREE.Mesh(
-    new THREE.BoxGeometry(w,h,d),
-    new THREE.MeshLambertMaterial({
-      color
-    })
-  );
-
-  body.position.y=h/2;
-  group.add(body);
-
-  const roof=new THREE.Mesh(
-    new THREE.BoxGeometry(
-      w+1,
-      .5,
-      d+1
-    ),
-    new THREE.MeshLambertMaterial({
-      color:0x303030
-    })
-  );
-
-  roof.position.y=h+.25;
-  group.add(roof);
-
-  group.position.set(x,0,z);
-
-  group.userData.name=name;
-
-  world.add(group);
-
-  return group;
-}
-
-
-/* BENIN CITY AREAS */
-
-building(-45,-45,20,8,20,0xc49a6c,"Shop");
-building(45,-45,22,12,20,0xd6d0bf,"Office");
-building(-45,45,25,10,20,0xb97954,"Market");
-building(45,45,20,7,20,0xc4c7b7,"Restaurant");
-
-building(-120,40,35,14,25,0x9d6d4d,"New Benin Market");
-building(120,-40,30,16,25,0xb8b0a1,"GRA House");
-building(110,110,30,10,25,0x8f6d4e,"Airport Hotel");
-building(-120,-110,35,13,25,0xa7896c,"Ugbowo Shops");
-
-
-/* =====================================================
-   OBA PALACE
-===================================================== */
-
-const palace=new THREE.Group();
-
-const palaceBase=new THREE.Mesh(
-  new THREE.BoxGeometry(42,4,28),
-  new THREE.MeshLambertMaterial({
-    color:0x9b3c24
-  })
-);
-
-palaceBase.position.y=2;
-palace.add(palaceBase);
-
-const palaceRoof=new THREE.Mesh(
-  new THREE.ConeGeometry(24,10,4),
-  new THREE.MeshLambertMaterial({
-    color:0x6e1712
-  })
-);
-
-palaceRoof.position.y=9;
-palaceRoof.rotation.y=Math.PI/4;
-palace.add(palaceRoof);
-
-for(let x=-15;x<=15;x+=10){
-
-  const pillar=new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      1.3,1.3,9,8
-    ),
-    new THREE.MeshLambertMaterial({
-      color:0xc69b4a
-    })
-  );
-
-  pillar.position.set(x,4.5,15);
-  palace.add(pillar);
-}
-
-palace.position.set(0,0,-100);
-
-world.add(palace);
-
-
-/* PALACE SIGN */
-
-function label(text,x,y,z){
-
-  const c=document.createElement("canvas");
-  c.width=512;
-  c.height=128;
-
-  const ctx=c.getContext("2d");
-
-  ctx.fillStyle="rgba(0,0,0,.75)";
-  ctx.fillRect(0,0,512,128);
-
-  ctx.fillStyle="white";
-  ctx.font="bold 42px Arial";
-  ctx.textAlign="center";
-  ctx.fillText(text,256,78);
-
-  const texture=new THREE.CanvasTexture(c);
-
-  const sprite=new THREE.Sprite(
-    new THREE.SpriteMaterial({
-      map:texture,
-      transparent:true
-    })
-  );
-
-  sprite.scale.set(14,3.5,1);
-  sprite.position.set(x,y,z);
-
-  world.add(sprite);
-}
-
-label(
-  "👑 OBA'S PALACE",
-  0,
-  14,
-  -100
-);
-
-label(
-  "UGBOWO",
-  -45,
-  15,
-  -45
-);
-
-label(
-  "RING ROAD",
-  70,
-  12,
-  0
-);
-
-
-/* =====================================================
-   PLAYER
-===================================================== */
-
-const playerGroup=new THREE.Group();
-
-const body=new THREE.Mesh(
-  new THREE.CapsuleGeometry(
-    .45,1.2,4,8
-  ),
-  new THREE.MeshLambertMaterial({
-    color:0x202a38
-  })
-);
-
-body.position.y=1.3;
-playerGroup.add(body);
-
-const head=new THREE.Mesh(
-  new THREE.SphereGeometry(.43,8,8),
-  new THREE.MeshLambertMaterial({
-    color:0x8d5a3b
-  })
-);
-
-head.position.y=2.35;
-playerGroup.add(head);
-
-playerGroup.position.set(0,0,20);
-
-scene.add(playerGroup);
-
-
-/* =====================================================
-   NPCs
-===================================================== */
-
-const npcs=[];
-
-const npcNames=[
-  "Osaro",
-  "Efe",
-  "Ivie",
-  "Amaka",
-  "Omoregie",
-  "Eghosa",
-  "Eseosa",
-  "Lucky",
-  "Tony",
-  "Queen"
-];
-
-function createNPC(i){
-
-  const npc=new THREE.Group();
-
-  const shirtColors=[
-    0x34495e,
-    0x7d3325,
-    0x4d6b3a,
-    0x7a5c28,
-    0x5c3d70
-  ];
-
-  const torso=new THREE.Mesh(
-    new THREE.BoxGeometry(.7,1.1,.45),
-    new THREE.MeshLambertMaterial({
-      color:shirtColors[i%shirtColors.length]
-    })
-  );
-
-  torso.position.y=1;
-  npc.add(torso);
-
-  const head=new THREE.Mesh(
-    new THREE.SphereGeometry(.35,7,7),
-    new THREE.MeshLambertMaterial({
-      color:0x875538
-    })
-  );
-
-  head.position.y=1.8;
-  npc.add(head);
-
-  const angle=Math.random()*Math.PI*2;
-  const radius=20+Math.random()*90;
-
-  npc.position.set(
-    Math.cos(angle)*radius,
-    0,
-    Math.sin(angle)*radius
-  );
-
-  npc.userData={
-    name:npcNames[i%npcNames.length],
-    targetX:(Math.random()-.5)*180,
-    targetZ:(Math.random()-.5)*180,
-    speed:.015+Math.random()*.025,
-    job:[
-      "Shopkeeper",
-      "Student",
-      "Driver",
-      "Vendor",
-      "Worker",
-      "Police Officer"
-    ][i%6]
+  const state = {
+    html: stage.innerHTML,
+    color:currentColor
   };
 
-  world.add(npc);
-  npcs.push(npc);
+  history = history.slice(0,historyIndex+1);
+
+  history.push(state);
+
+  historyIndex++;
+
+  if(history.length > 30){
+    history.shift();
+    historyIndex--;
+  }
+
 }
 
-for(let i=0;i<32;i++){
-  createNPC(i);
+function restoreState(state){
+
+  const stage = document.getElementById("designStage");
+
+  stage.innerHTML = state.html;
+
+  currentColor = state.color;
+
+  selectedElement = null;
+
+  setupElements();
+
+  applyGarmentColor();
+
+}
+
+function undo(){
+
+  if(historyIndex <= 0) return;
+
+  historyIndex--;
+
+  restoreState(history[historyIndex]);
+
+}
+
+function redo(){
+
+  if(historyIndex >= history.length-1) return;
+
+  historyIndex++;
+
+  restoreState(history[historyIndex]);
+
 }
 
 
-/* =====================================================
-   VEHICLES
-===================================================== */
+/* =========================================================
+   GARMENT
+========================================================= */
 
-const vehicles=[];
+function selectGarment(type,button){
 
-function createVehicle(type,x,z,dir){
+  if(typeof button === "object"){
+    document.querySelectorAll(".garment")
+      .forEach(x=>x.classList.remove("active"));
 
-  const v=new THREE.Group();
-
-  let color=0xffffff;
-
-  if(type==="bus"){
-    color=dir%2===0?0xb32626:0xe0b52c;
+    button.classList.add("active");
   }
 
-  if(type==="police"){
-    color=0xdfe7ee;
+  document.getElementById("garmentSelect").value = type;
+
+  const shirt = document.getElementById("shirt");
+
+  if(type==="hoodie"){
+
+    shirt.style.filter="none";
+
+    document.querySelector(".neck").style.width="100px";
+
   }
 
-  if(type==="taxi"){
-    color=0xe1b83b;
+  if(type==="shirt"){
+
+    document.querySelector(".neck").style.width="80px";
+
   }
 
-  const base=new THREE.Mesh(
-    new THREE.BoxGeometry(
-      type==="bus"?3.2:2.2,
+  if(type==="jersey"){
+
+    document.querySelector(".neck").style.width="90px";
+
+  }
+
+  if(type==="jacket"){
+
+    document.querySelector(".neck").style.width="70px";
+
+  }
+
+  if(type==="shorts"){
+
+    alert("Shorts mode selected. Garment customization is ready for the next shape upgrade.");
+
+  }
+
+  if(type==="cap"){
+
+    alert("Cap mode selected. Garment customization is ready for the next shape upgrade.");
+
+  }
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   COLOR
+========================================================= */
+
+function changeColor(color,button){
+
+  currentColor = color;
+
+  document.querySelectorAll(".color")
+    .forEach(x=>x.classList.remove("active"));
+
+  button.classList.add("active");
+
+  applyGarmentColor();
+
+  saveState();
+
+}
+
+function applyGarmentColor(){
+
+  document.querySelectorAll(".garmentPart")
+    .forEach(el=>{
+      el.style.background=currentColor;
+    });
+
+}
+
+
+/* =========================================================
+   VIEW
+========================================================= */
+
+function setView(view){
+
+  currentView=view;
+
+  document.getElementById("frontBtn")
+    .classList.toggle("active",view==="front");
+
+  document.getElementById("backBtn")
+    .classList.toggle("active",view==="back");
+
+  const logo=document.getElementById("defaultLogo");
+
+  if(view==="back"){
+
+    logo.innerHTML=`
+      <div class="art-sub">CLOTHLAB</div>
+      <div class="art-logo">BACK</div>
+      <div class="art-sub">ORIGINAL DESIGN</div>
+    `;
+
+  }else{
+
+    logo.innerHTML=`
+      <div class="art-logo">YOUR</div>
+      <div class="art-logo">BRAND</div>
+      <div class="art-sub">EST. 2026</div>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+function addText(){
+
+  const el=document.createElement("div");
+
+  el.className="design-element text-element";
+
+  el.textContent="YOUR TEXT";
+
+  el.style.left="50%";
+  el.style.top="50%";
+  el.style.transform="translate(-50%,-50%)";
+  el.style.color="white";
+
+  document.getElementById("shirt").appendChild(el);
+
+  makeSelectable(el);
+
+  selectElement(el);
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   SHAPES
+========================================================= */
+
+function addShape(type){
+
+  const el=document.createElement("div");
+
+  el.className="design-element";
+
+  el.style.width="90px";
+  el.style.height="90px";
+
+  el.style.left="50%";
+  el.style.top="50%";
+
+  el.style.transform="translate(-50%,-50%)";
+
+  if(type==="circle"){
+
+    el.style.borderRadius="50%";
+    el.style.background="#ffffff";
+
+  }
+
+  if(type==="square"){
+
+    el.style.background="#ffffff";
+
+  }
+
+  if(type==="star"){
+
+    el.textContent="★";
+    el.style.fontSize="90px";
+    el.style.color="#ffffff";
+    el.style.lineHeight="90px";
+    el.style.textAlign="center";
+    el.style.width="100px";
+    el.style.height="100px";
+
+  }
+
+  document.getElementById("shirt").appendChild(el);
+
+  makeSelectable(el);
+
+  selectElement(el);
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+function uploadImage(event){
+
+  const file=event.target.files[0];
+
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=function(e){
+
+    const wrapper=document.createElement("div");
+
+    wrapper.className="design-element";
+
+    wrapper.style.left="50%";
+    wrapper.style.top="50%";
+    wrapper.style.transform="translate(-50%,-50%)";
+
+    const img=document.createElement("img");
+
+    img.src=e.target.result;
+
+    wrapper.appendChild(img);
+
+    document.getElementById("shirt")
+      .appendChild(wrapper);
+
+    makeSelectable(wrapper);
+
+    selectElement(wrapper);
+
+    saveState();
+
+  };
+
+  reader.readAsDataURL(file);
+
+  event.target.value="";
+
+}
+
+
+/* =========================================================
+   ELEMENT SELECTION
+========================================================= */
+
+function makeSelectable(el){
+
+  el.addEventListener("mousedown",startDrag);
+  el.addEventListener("touchstart",startDrag,{passive:false});
+
+  el.addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    selectElement(el);
+
+  });
+
+}
+
+function setupElements(){
+
+  document.querySelectorAll(".design-element")
+    .forEach(makeSelectable);
+
+}
+
+function selectElement(el){
+
+  if(selectedElement){
+
+    selectedElement.classList.remove("selected");
+
+  }
+
+  selectedElement=el;
+
+  if(el){
+
+    el.classList.add("selected");
+
+    showControls(el);
+
+  }
+
+}
+
+
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+let dragging=false;
+let dragOffsetX=0;
+let dragOffsetY=0;
+
+function startDrag(e){
+
+  if(e.target.closest(".design-element")){
+
+    const el=e.currentTarget;
+
+    selectElement(el);
+
+    dragging=true;
+
+    const rect=el.getBoundingClientRect();
+
+    const point=e.touches ? e.touches[0] : e;
+
+    dragOffsetX=point.clientX-rect.left;
+    dragOffsetY=point.clientY-rect.top;
+
+    document.addEventListener("mousemove",dragMove);
+    document.addEventListener("mouseup",endDrag);
+
+    document.addEventListener("touchmove",dragMove,{passive:false});
+    document.addEventListener("touchend",endDrag);
+
+    e.preventDefault();
+
+  }
+
+}
+
+function dragMove(e){
+
+  if(!dragging || !selectedElement)return;
+
+  const shirt=document.getElementById("shirt");
+
+  const rect=shirt.getBoundingClientRect();
+
+  const point=e.touches ? e.touches[0] : e;
+
+  let x=point.clientX-rect.left-dragOffsetX;
+  let y=point.clientY-rect.top-dragOffsetY;
+
+  x=(x/rect.width)*100;
+  y=(y/rect.height)*100;
+
+  selectedElement.style.left=x+"%";
+  selectedElement.style.top=y+"%";
+
+}
+
+function endDrag(){
+
+  dragging=false;
+
+  document.removeEventListener("mousemove",dragMove);
+  document.removeEventListener("mouseup",endDrag);
+
+  document.removeEventListener("touchmove",dragMove);
+  document.removeEventListener("touchend",endDrag);
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+function showControls(el){
+
+  const box=document.getElementById("elementControls");
+
+  box.innerHTML=`
+
+    <div class="field">
+      <label>Text</label>
+      <input
+        type="text"
+        id="editText"
+        value="${el.textContent || ""}"
+      >
+    </div>
+
+    <div class="field">
+      <label>Size</label>
+      <input
+        class="range"
+        type="range"
+        min="10"
+        max="150"
+        value="40"
+        id="sizeRange"
+      >
+    </div>
+
+    <div class="field">
+      <label>Rotation</label>
+      <input
+        class="range"
+        type="range"
+        min="-180"
+        max="180"
+        value="0"
+        id="rotateRange"
+      >
+    </div>
+
+    <div class="field">
+      <label>Element Color</label>
+      <input
+        type="color"
+        id="elementColor"
+        value="#ffffff"
+        style="width:100%;height:40px"
+      >
+    </div>
+
+  `;
+
+  const text=document.getElementById("editText");
+
+  text.addEventListener("input",function(){
+
+    if(el.classList.contains("text-element") ||
+       !el.querySelector("img")){
+
+      el.textContent=this.value;
+
+    }
+
+  });
+
+  document.getElementById("sizeRange")
+    .addEventListener("input",function(){
+
+      if(el.querySelector("img")){
+
+        el.querySelector("img").style.maxWidth=this.value+"px";
+
+      }else{
+
+        el.style.fontSize=this.value+"px";
+
+      }
+
+    });
+
+  document.getElementById("rotateRange")
+    .addEventListener("input",function(){
+
+      el.style.transform=
+        "translate(-50%,-50%) rotate("+this.value+"deg)";
+
+    });
+
+  document.getElementById("elementColor")
+    .addEventListener("input",function(){
+
+      el.style.color=this.value;
+
+      if(!el.querySelector("img")){
+        el.style.backgroundColor=
+          el.classList.contains("text-element")
+          ? "transparent"
+          : this.value;
+      }
+
+    });
+
+}
+
+
+/* =========================================================
+   CENTER
+========================================================= */
+
+function centerSelected(){
+
+  if(!selectedElement)return;
+
+  selectedElement.style.left="50%";
+  selectedElement.style.top="50%";
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteSelected(){
+
+  if(!selectedElement)return;
+
+  selectedElement.remove();
+
+  selectedElement=null;
+
+  document.getElementById("elementControls").innerHTML=`
+    <div class="empty">
+      Select an element on the garment to edit it.
+    </div>
+  `;
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   DUPLICATE
+========================================================= */
+
+function duplicateSelected(){
+
+  if(!selectedElement)return;
+
+  const copy=selectedElement.cloneNode(true);
+
+  copy.style.left=
+    "calc("+selectedElement.style.left+" + 30px)";
+
+  document.getElementById("shirt")
+    .appendChild(copy);
+
+  makeSelectable(copy);
+
+  selectElement(copy);
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   LAYERS
+========================================================= */
+
+function bringForward(){
+
+  if(!selectedElement)return;
+
+  selectedElement.style.zIndex=
+    parseInt(selectedElement.style.zIndex || 20)+1;
+
+  saveState();
+
+}
+
+function sendBackward(){
+
+  if(!selectedElement)return;
+
+  selectedElement.style.zIndex=
+    Math.max(
       1,
-      type==="bus"?7:4
-    ),
-    new THREE.MeshLambertMaterial({
-      color
-    })
-  );
-
-  base.position.y=.8;
-  v.add(base);
-
-  const top=new THREE.Mesh(
-    new THREE.BoxGeometry(
-      type==="bus"?2.7:1.8,
-      .9,
-      type==="bus"?4.5:2
-    ),
-    new THREE.MeshLambertMaterial({
-      color:0x253342
-    })
-  );
-
-  top.position.y=1.55;
-  v.add(top);
-
-  if(type==="police"){
-
-    const light=new THREE.Mesh(
-      new THREE.BoxGeometry(1,.2,.5),
-      new THREE.MeshBasicMaterial({
-        color:0xff2222
-      })
+      parseInt(selectedElement.style.zIndex || 20)-1
     );
 
-    light.position.y=2.1;
-    v.add(light);
+  saveState();
+
+}
+
+
+/* =========================================================
+   DRAWING
+========================================================= */
+
+let drawing=false;
+let canvas=null;
+let ctx=null;
+
+function toggleDrawing(){
+
+  if(!canvas){
+
+    canvas=document.createElement("canvas");
+
+    canvas.width=390;
+    canvas.height=470;
+
+    canvas.style.position="absolute";
+    canvas.style.left="0";
+    canvas.style.top="0";
+    canvas.style.width="390px";
+    canvas.style.height="470px";
+    canvas.style.zIndex="30";
+    canvas.style.pointerEvents="auto";
+
+    document.getElementById("shirt")
+      .appendChild(canvas);
+
+    ctx=canvas.getContext("2d");
+
+    ctx.strokeStyle="#ffffff";
+    ctx.lineWidth=5;
+    ctx.lineCap="round";
+
+    canvas.addEventListener("mousedown",startDraw);
+    canvas.addEventListener("mousemove",draw);
+    canvas.addEventListener("mouseup",stopDraw);
+    canvas.addEventListener("mouseleave",stopDraw);
+
+    canvas.addEventListener("touchstart",startDraw);
+    canvas.addEventListener("touchmove",draw);
+    canvas.addEventListener("touchend",stopDraw);
+
   }
 
-  v.position.set(x,0,z);
+  drawing=!drawing;
 
-  v.userData={
-    type,
-    direction:dir%2===0?1:-1,
-    speed:type==="bus"?.07:.11
+  canvas.style.pointerEvents=
+    drawing ? "auto":"none";
+
+  alert(
+    drawing
+    ? "Drawing mode ON. Draw directly on the garment."
+    : "Drawing mode OFF."
+  );
+
+}
+
+function getPoint(e){
+
+  const rect=canvas.getBoundingClientRect();
+
+  const p=e.touches ? e.touches[0] : e;
+
+  return {
+    x:(p.clientX-rect.left)*(canvas.width/rect.width),
+    y:(p.clientY-rect.top)*(canvas.height/rect.height)
   };
 
-  world.add(v);
-  vehicles.push(v);
 }
 
+function startDraw(e){
 
-/* RED/YELLOW BUSES */
+  if(!drawing)return;
 
-for(let i=0;i<5;i++){
+  const p=getPoint(e);
 
-  createVehicle(
-    "bus",
-    -200+i*80,
-    -12,
-    i
-  );
+  ctx.beginPath();
+  ctx.moveTo(p.x,p.y);
 
-  createVehicle(
-    "bus",
-    12,
-    -200+i*80,
-    i
-  );
+  e.preventDefault();
+
 }
 
+function draw(e){
 
-/* TAXIS */
+  if(!drawing)return;
 
-for(let i=0;i<7;i++){
+  const p=getPoint(e);
 
-  createVehicle(
-    "taxi",
-    -170+i*55,
-    13,
-    i
-  );
+  ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+
+  e.preventDefault();
+
 }
 
+function stopDraw(){
 
-/* POLICE */
+  if(drawing){
 
-for(let i=0;i<4;i++){
+    saveState();
 
-  createVehicle(
-    "police",
-    -100+i*65,
-    10,
-    i
-  );
-}
-
-
-/* =====================================================
-   TREES
-===================================================== */
-
-function tree(x,z){
-
-  const g=new THREE.Group();
-
-  const trunk=new THREE.Mesh(
-    new THREE.CylinderGeometry(.25,.35,2.5,6),
-    new THREE.MeshLambertMaterial({
-      color:0x5a3925
-    })
-  );
-
-  trunk.position.y=1.25;
-  g.add(trunk);
-
-  const leaves=new THREE.Mesh(
-    new THREE.SphereGeometry(
-      2.2,
-      7,
-      7
-    ),
-    new THREE.MeshLambertMaterial({
-      color:0x37643b
-    })
-  );
-
-  leaves.position.y=3.2;
-  g.add(leaves);
-
-  g.position.set(x,0,z);
-
-  world.add(g);
-}
-
-for(let i=0;i<70;i++){
-
-  const x=(Math.random()-.5)*420;
-  const z=(Math.random()-.5)*420;
-
-  if(Math.abs(x)<20 || Math.abs(z)<20) continue;
-
-  tree(x,z);
-}
-
-
-/* =====================================================
-   JOYSTICK
-===================================================== */
-
-let joyX=0;
-let joyY=0;
-
-const joystick=document.getElementById("joystick");
-const stick=document.getElementById("stick");
-
-let joyActive=false;
-
-function moveJoystick(clientX,clientY){
-
-  const r=joystick.getBoundingClientRect();
-
-  let x=clientX-(r.left+r.width/2);
-  let y=clientY-(r.top+r.height/2);
-
-  const max=43;
-
-  const len=Math.sqrt(x*x+y*y);
-
-  if(len>max){
-    x=x/len*max;
-    y=y/len*max;
   }
 
-  joyX=x/max;
-  joyY=y/max;
-
-  stick.style.left=(37+x)+"px";
-  stick.style.top=(37+y)+"px";
 }
 
-joystick.addEventListener(
-  "pointerdown",
-  e=>{
-    joyActive=true;
-    joystick.setPointerCapture(e.pointerId);
-    moveJoystick(e.clientX,e.clientY);
+
+/* =========================================================
+   ZOOM
+========================================================= */
+
+function zoom(amount){
+
+  zoomLevel+=amount/100;
+
+  zoomLevel=Math.max(.5,Math.min(1.5,zoomLevel));
+
+  document.getElementById("shirt").style.transform=
+    "scale("+zoomLevel+")";
+
+}
+
+function resetZoom(){
+
+  zoomLevel=1;
+
+  document.getElementById("shirt").style.transform=
+    "scale(1)";
+
+}
+
+
+/* =========================================================
+   TEMPLATES
+========================================================= */
+
+function applyTemplate(type){
+
+  const shirt=document.getElementById("shirt");
+
+  document.querySelectorAll(".design-element")
+    .forEach(x=>x.remove());
+
+  if(canvas){
+
+    canvas.remove();
+    canvas=null;
+
   }
-);
 
-joystick.addEventListener(
-  "pointermove",
-  e=>{
-    if(joyActive)
-      moveJoystick(e.clientX,e.clientY);
+  if(type==="minimal"){
+
+    const text=document.createElement("div");
+
+    text.className="design-element text-element";
+
+    text.textContent="H U D D L E";
+
+    text.style.left="50%";
+    text.style.top="50%";
+    text.style.transform="translate(-50%,-50%)";
+    text.style.fontSize="30px";
+    text.style.letterSpacing="8px";
+
+    shirt.appendChild(text);
+
+    makeSelectable(text);
+
   }
-);
 
-joystick.addEventListener(
-  "pointerup",
-  ()=>{
-    joyActive=false;
-    joyX=0;
-    joyY=0;
-    stick.style.left="37px";
-    stick.style.top="37px";
+  if(type==="street"){
+
+    const top=document.createElement("div");
+
+    top.className="design-element text-element";
+    top.textContent="NO RULES";
+
+    top.style.left="50%";
+    top.style.top="42%";
+    top.style.transform="translate(-50%,-50%)";
+    top.style.fontSize="38px";
+    top.style.color="#ffffff";
+
+    shirt.appendChild(top);
+
+    makeSelectable(top);
+
+    const bottom=document.createElement("div");
+
+    bottom.className="design-element text-element";
+    bottom.textContent="CREATE YOUR OWN LANE";
+
+    bottom.style.left="50%";
+    bottom.style.top="58%";
+    bottom.style.transform="translate(-50%,-50%)";
+    bottom.style.fontSize="11px";
+    bottom.style.letterSpacing="4px";
+
+    shirt.appendChild(bottom);
+
+    makeSelectable(bottom);
+
   }
-);
+
+  if(type==="sport"){
+
+    const number=document.createElement("div");
+
+    number.className="design-element text-element";
+
+    number.textContent="07";
+
+    number.style.left="50%";
+    number.style.top="50%";
+    number.style.transform="translate(-50%,-50%)";
+    number.style.fontSize="100px";
+    number.style.fontStyle="italic";
+
+    shirt.appendChild(number);
+
+    makeSelectable(number);
+
+  }
+
+  if(type==="luxury"){
+
+    const logo=document.createElement("div");
+
+    logo.className="design-element text-element";
+
+    logo.textContent="CL";
+
+    logo.style.left="50%";
+    logo.style.top="48%";
+    logo.style.transform="translate(-50%,-50%)";
+    logo.style.fontSize="80px";
+    logo.style.letterSpacing="-10px";
+
+    shirt.appendChild(logo);
+
+    makeSelectable(logo);
+
+    const sub=document.createElement("div");
+
+    sub.className="design-element text-element";
+
+    sub.textContent="CLOTHLAB";
+
+    sub.style.left="50%";
+    sub.style.top="60%";
+    sub.style.transform="translate(-50%,-50%)";
+    sub.style.fontSize="12px";
+    sub.style.letterSpacing="8px";
+
+    shirt.appendChild(sub);
+
+    makeSelectable(sub);
+
+  }
+
+  saveState();
+
+}
 
 
-/* =====================================================
-   CAMERA / MOVEMENT
-===================================================== */
+/* =========================================================
+   MODAL
+========================================================= */
 
-let running=false;
+function openTemplates(){
 
-function updatePlayer(){
+  document.getElementById("templateModal")
+    .classList.add("show");
 
-  if(!started)return;
+}
 
-  const multiplier=running?1.8:1;
+function closeTemplates(){
 
-  const dx=joyX*player.speed*multiplier;
-  const dz=joyY*player.speed*multiplier;
+  document.getElementById("templateModal")
+    .classList.remove("show");
 
-  playerGroup.position.x+=dx;
-  playerGroup.position.z+=dz;
+}
 
-  player.energy-=
-    (Math.abs(dx)+Math.abs(dz))*.05;
 
-  player.energy=Math.max(
+/* =========================================================
+   NEW DESIGN
+========================================================= */
+
+function newDesign(){
+
+  if(!confirm("Start a new design?"))return;
+
+  location.reload();
+
+}
+
+function resetDesign(){
+
+  document.querySelectorAll(".design-element")
+    .forEach(x=>x.remove());
+
+  const logo=document.getElementById("defaultLogo");
+
+  logo.innerHTML=`
+    <div class="art-logo">YOUR</div>
+    <div class="art-logo">BRAND</div>
+    <div class="art-sub">EST. 2026</div>
+  `;
+
+  currentColor="#f5f5f5";
+
+  applyGarmentColor();
+
+  saveState();
+
+}
+
+
+/* =========================================================
+   SAVE / LOAD
+========================================================= */
+
+function saveProject(){
+
+  const project={
+    name:document.getElementById("designName").value,
+    html:document.getElementById("designStage").innerHTML,
+    color:currentColor
+  };
+
+  localStorage.setItem(
+    "clothlab_project",
+    JSON.stringify(project)
+  );
+
+  alert("Design saved on this device.");
+
+}
+
+function loadProject(){
+
+  const data=localStorage.getItem("clothlab_project");
+
+  if(!data){
+
+    alert("No saved project found.");
+
+    return;
+
+  }
+
+  const project=JSON.parse(data);
+
+  document.getElementById("designName").value=
+    project.name;
+
+  document.getElementById("designStage").innerHTML=
+    project.html;
+
+  currentColor=project.color;
+
+  setupElements();
+
+  applyGarmentColor();
+
+  alert("Design loaded.");
+
+}
+
+
+/* =========================================================
+   EXPORT PNG
+========================================================= */
+
+function exportDesign(){
+
+  const shirt=document.getElementById("shirt");
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=1000;
+  canvas.height=1200;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.fillStyle="#ffffff";
+
+  ctx.fillRect(
     0,
-    Math.min(100,player.energy)
+    0,
+    canvas.width,
+    canvas.height
   );
 
-  if(Math.abs(dx)+Math.abs(dz)>.001){
+  ctx.fillStyle="#111111";
 
-    playerGroup.rotation.y=
-      Math.atan2(dx,dz);
-  }
+  ctx.font="bold 38px Arial";
 
-  /* WORLD BOUNDS */
+  ctx.textAlign="center";
 
-  playerGroup.position.x=
-    Math.max(-220,
-      Math.min(220,
-        playerGroup.position.x
-      )
-    );
-
-  playerGroup.position.z=
-    Math.max(-220,
-      Math.min(220,
-        playerGroup.position.z
-      )
-    );
-
-
-  /* CAMERA */
-
-  const target=new THREE.Vector3(
-    playerGroup.position.x,
-    1.5,
-    playerGroup.position.z
+  ctx.fillText(
+    document.getElementById("designName").value,
+    500,
+    70
   );
 
-  const behind=new THREE.Vector3(
-    playerGroup.position.x,
-    7,
-    playerGroup.position.z+11
+  ctx.font="24px Arial";
+
+  ctx.fillStyle="#777";
+
+  ctx.fillText(
+    currentView.toUpperCase()+" VIEW",
+    500,
+    110
   );
 
-  camera.position.lerp(
-    behind,
-    .08
+  /*
+    Simple high-resolution garment export.
+    The live editor remains interactive while
+    the exported file gives a clean presentation.
+  */
+
+  const bodyColor=currentColor;
+
+  ctx.fillStyle=bodyColor;
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    300,
+    250,
+    400,
+    600,
+    30
   );
 
-  camera.lookAt(target);
+  ctx.fill();
 
-  updateLocation();
+  ctx.beginPath();
+
+  ctx.arc(
+    500,
+    250,
+    65,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fillStyle="#ffffff";
+
+  ctx.fill();
+
+  ctx.fillStyle=
+    bodyColor === "#050505"
+    ? "#ffffff"
+    : "#111111";
+
+  ctx.font="bold 65px Arial";
+
+  ctx.fillText(
+    "YOUR",
+    500,
+    520
+  );
+
+  ctx.fillText(
+    "BRAND",
+    500,
+    590
+  );
+
+  ctx.font="20px Arial";
+
+  ctx.fillText(
+    "EST. 2026",
+    500,
+    635
+  );
+
+  const link=document.createElement("a");
+
+  link.download=
+    (document.getElementById("designName").value
+      ||"clothlab-design")
+    .replace(/\s+/g,"-")
+    .toLowerCase()
+    +".png";
+
+  link.href=canvas.toDataURL("image/png");
+
+  link.click();
+
 }
 
 
-/* =====================================================
-   LOCATION SYSTEM
-===================================================== */
+/* =========================================================
+   CLICK OUTSIDE
+========================================================= */
 
-function updateLocation(){
+document
+  .getElementById("shirt")
+  .addEventListener("click",function(e){
 
-  const x=playerGroup.position.x;
-  const z=playerGroup.position.z;
+    if(
+      e.target===this ||
+      e.target.classList.contains("shirt-body") ||
+      e.target.classList.contains("sleeve")
+    ){
 
-  let loc="Benin City";
+      selectElement(null);
 
-  if(Math.abs(x)<55 && Math.abs(z)<55)
-    loc="Ugbowo";
-
-  if(x>55 && x<130 && Math.abs(z)<55)
-    loc="Ring Road";
-
-  if(x<-55 && z<0)
-    loc="New Benin";
-
-  if(x>70 && z<0)
-    loc="GRA";
-
-  if(x>70 && z>60)
-    loc="Airport Road";
-
-  if(x<-60 && z>40)
-    loc="Ekewan";
-
-  if(Math.abs(z+100)<35 && Math.abs(x)<40)
-    loc="Oba's Palace";
-
-  player.location=loc;
-
-  document.getElementById(
-    "location"
-  ).textContent="📍 "+loc;
-}
-
-
-/* =====================================================
-   NPC MOVEMENT
-===================================================== */
-
-function updateNPCs(){
-
-  for(const npc of npcs){
-
-    const dx=
-      npc.userData.targetX-
-      npc.position.x;
-
-    const dz=
-      npc.userData.targetZ-
-      npc.position.z;
-
-    const dist=Math.sqrt(
-      dx*dx+dz*dz
-    );
-
-    if(dist<3){
-
-      npc.userData.targetX=
-        (Math.random()-.5)*190;
-
-      npc.userData.targetZ=
-        (Math.random()-.5)*190;
-
-      continue;
     }
 
-    npc.position.x+=
-      dx/dist*npc.userData.speed;
-
-    npc.position.z+=
-      dz/dist*npc.userData.speed;
-
-    npc.rotation.y=
-      Math.atan2(dx,dz);
-  }
-}
+  });
 
 
-/* =====================================================
-   VEHICLE MOVEMENT
-===================================================== */
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
 
-function updateVehicles(){
+document.addEventListener("keydown",function(e){
 
-  for(const v of vehicles){
+  if(e.key==="Delete"){
 
-    if(v.userData.type==="bus" ||
-       v.userData.type==="taxi" ||
-       v.userData.type==="police"){
+    deleteSelected();
 
-      v.position.x+=
-        v.userData.speed*
-        v.userData.direction;
-
-      if(v.position.x>240)
-        v.position.x=-240;
-
-      if(v.position.x<-240)
-        v.position.x=240;
-    }
-  }
-}
-
-
-/* =====================================================
-   TIME
-===================================================== */
-
-let timeCounter=0;
-
-function updateTime(){
-
-  timeCounter++;
-
-  if(timeCounter%900!==0)
-    return;
-
-  player.hour++;
-
-  if(player.hour>=24){
-
-    player.hour=0;
-    player.day++;
-
-    player.money+=
-      player.job==="Student"?0:5000;
-
-    player.energy=100;
-
-    addChat(
-      "CITY",
-      "A new day begins in Benin City 🌅"
-    );
   }
 
-  const h=
-    String(player.hour).padStart(2,"0");
+  if((e.ctrlKey||e.metaKey) && e.key==="z"){
 
-  document.getElementById(
-    "clock"
-  ).textContent=h+":00";
+    e.preventDefault();
+    undo();
 
-  document.getElementById(
-    "day"
-  ).textContent=player.day;
-
-  updateLighting();
-}
-
-
-/* =====================================================
-   DAY / NIGHT
-===================================================== */
-
-function updateLighting(){
-
-  const h=player.hour;
-
-  if(h>=19 || h<6){
-
-    scene.background.set(0x101827);
-
-    hemi.intensity=.45;
-    sun.intensity=.35;
-
-  }else{
-
-    scene.background.set(0x87a9c7);
-
-    hemi.intensity=1.8;
-    sun.intensity=1.5;
-  }
-}
-
-
-/* =====================================================
-   CHAT
-===================================================== */
-
-const chat=document.getElementById("chat");
-
-function addChat(name,text){
-
-  const line=document.createElement("div");
-
-  line.className="chatLine";
-
-  line.innerHTML=
-    "<b>"+name+":</b> "+text;
-
-  chat.prepend(line);
-
-  while(chat.children.length>7)
-    chat.removeChild(
-      chat.lastChild
-    );
-}
-
-
-/* RANDOM NPC CHAT */
-
-const cityMessages=[
-  "Omo, traffic today 😂",
-  "How far?",
-  "You dey go where?",
-  "This weather is hot o!",
-  "I dey find food.",
-  "Business must move today.",
-  "You see that bus?",
-  "Benin City no dull."
-];
-
-setInterval(()=>{
-
-  if(!started)return;
-
-  const npc=
-    npcs[
-      Math.floor(
-        Math.random()*npcs.length
-      )
-    ];
-
-  addChat(
-    npc.userData.name,
-    cityMessages[
-      Math.floor(
-        Math.random()*cityMessages.length
-      )
-    ]
-  );
-
-},6000);
-
-
-/* =====================================================
-   ACTIONS
-===================================================== */
-
-function showMessage(text){
-
-  const box=
-    document.getElementById("message");
-
-  box.textContent=text;
-  box.style.display="block";
-
-  clearTimeout(window.msgTimer);
-
-  window.msgTimer=setTimeout(
-    ()=>{
-      box.style.display="none";
-    },
-    2500
-  );
-}
-
-
-/* TALK */
-
-document.getElementById(
-  "talk"
-).addEventListener("click",()=>{
-
-  let nearest=null;
-  let nearestDist=999;
-
-  for(const npc of npcs){
-
-    const d=
-      npc.position.distanceTo(
-        playerGroup.position
-      );
-
-    if(d<nearestDist){
-
-      nearest=npc;
-      nearestDist=d;
-    }
   }
 
-  if(nearest && nearestDist<8){
+  if((e.ctrlKey||e.metaKey) && e.key==="y"){
 
-    const replies=[
-      "How far? 👋",
-      "You be new here?",
-      "I dey work around here.",
-      "Nice to meet you!",
-      "You wan explore Benin?",
-      "This area busy today."
-    ];
+    e.preventDefault();
+    redo();
 
-    const reply=
-      replies[
-        Math.floor(
-          Math.random()*replies.length
-        )
-      ];
-
-    addChat(
-      nearest.userData.name,
-      reply
-    );
-
-    player.happiness=
-      Math.min(
-        100,
-        player.happiness+2
-      );
-
-  }else{
-
-    showMessage(
-      "No NPC close enough to talk to."
-    );
   }
+
 });
 
 
-/* WORK */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-document.getElementById(
-  "work"
-).addEventListener("click",()=>{
+function initialize(){
 
-  if(player.energy<15){
+  applyGarmentColor();
 
-    showMessage(
-      "You're too tired to work."
-    );
+  setupElements();
 
-    return;
-  }
+  saveState();
 
-  const earned=
-    player.job==="Student"
-      ? 3000
-      : 8000;
-
-  player.money+=earned;
-  player.energy-=15;
-  player.reputation+=1;
-
-  showMessage(
-    "You worked and earned ₦"+
-    earned.toLocaleString()+" 💼"
-  );
-});
-
-
-/* FOOD */
-
-document.getElementById(
-  "eat"
-).addEventListener("click",()=>{
-
-  if(player.money<1500){
-
-    showMessage(
-      "You need ₦1,500 for food."
-    );
-
-    return;
-  }
-
-  player.money-=1500;
-
-  player.energy=
-    Math.min(100,
-      player.energy+18
-    );
-
-  player.health=
-    Math.min(100,
-      player.health+4
-    );
-
-  player.happiness=
-    Math.min(100,
-      player.happiness+5
-    );
-
-  showMessage(
-    "You ate some good food 🍛"
-  );
-});
-
-
-/* CAR */
-
-document.getElementById(
-  "car"
-).addEventListener("click",()=>{
-
-  if(player.money<350000){
-
-    showMessage(
-      "You need ₦350,000 to buy a vehicle."
-    );
-
-    return;
-  }
-
-  player.money-=350000;
-  player.inCar=true;
-  player.speed=.16;
-
-  showMessage(
-    "You bought a vehicle 🚗"
-  );
-});
-
-
-/* RUN */
-
-document.getElementById(
-  "run"
-).addEventListener(
-  "pointerdown",
-  ()=>running=true
-);
-
-document.getElementById(
-  "run"
-).addEventListener(
-  "pointerup",
-  ()=>running=false
-);
-
-
-/* MAP */
-
-document.getElementById(
-  "map"
-).addEventListener("click",()=>{
-
-  showMessage(
-    "🏙️ Ugbowo • Ring Road • New Benin • GRA • Ekewan • Airport Road • Oba's Palace"
-  );
-});
-
-
-/* =====================================================
-   START
-===================================================== */
-
-document.getElementById(
-  "startBtn"
-).addEventListener("click",()=>{
-
-  const name=
-    document.getElementById(
-      "nameInput"
-    ).value.trim();
-
-  player.name=
-    name||"Player";
-
-  document.getElementById(
-    "playerName"
-  ).textContent=
-    "👤 "+player.name;
-
-  document.getElementById(
-    "start"
-  ).style.display="none";
-
-  started=true;
-
-  addChat(
-    "CITY",
-    "Welcome to Benin City, "+
-    player.name+" 🇳🇬"
-  );
-
-  showMessage(
-    "Welcome to Benin Life! Explore the city 🚀"
-  );
-});
-
-
-/* =====================================================
-   HUD
-===================================================== */
-
-function updateHUD(){
-
-  document.getElementById(
-    "money"
-  ).textContent=
-    "₦"+
-    Math.round(
-      player.money
-    ).toLocaleString();
-
-  document.getElementById(
-    "health"
-  ).textContent=
-    Math.round(player.health);
-
-  document.getElementById(
-    "energy"
-  ).textContent=
-    Math.round(player.energy);
 }
 
-
-/* =====================================================
-   RESIZE
-===================================================== */
-
-function resize(){
-
-  const width=window.innerWidth;
-  const height=window.innerHeight;
-
-  renderer.setSize(
-    width,
-    height,
-    false
-  );
-
-  camera.aspect=
-    width/height;
-
-  camera.updateProjectionMatrix();
-}
-
-window.addEventListener(
-  "resize",
-  resize
-);
-
-resize();
-
-
-/* =====================================================
-   GAME LOOP
-===================================================== */
-
-function animate(){
-
-  requestAnimationFrame(animate);
-
-  updatePlayer();
-  updateNPCs();
-  updateVehicles();
-  updateTime();
-  updateHUD();
-
-  renderer.render(
-    scene,
-    camera
-  );
-}
-
-animate();
+initialize();
 
 </script>
 
